@@ -1,0 +1,8 @@
+.idea/
+target/
+*.iml
+
+Будет удалено .gitignore
+Будет удалено .idea/
+Будет удалено javaeeshangareevrr.iml
+Будет удалено target/
