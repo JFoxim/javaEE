@@ -80,9 +80,7 @@ public class ProductRepository {
                     "\tid int auto_increment primary key,\n" +
                     "    name varchar(255),\n" +
                     "    description varchar(5000),\n" +
-                    "    price decimal(8,2),\n" +
-                    "    unique index uq_name(name)\n" +
-                    ");");
+                    "    price decimal(8,2));");
         }
     }
 }
