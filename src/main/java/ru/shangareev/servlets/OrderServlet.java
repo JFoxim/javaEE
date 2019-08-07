@@ -18,8 +18,8 @@ public class OrderServlet extends HttpServlet {
         logger.info("OrderServlet request");
         resp.setContentType(req.getAttribute("contentType").toString());
 
-        resp.getWriter().println("<h2>Order Servlet</h2>");
-        req.getRequestDispatcher("/WEB-INF/views/order.html").forward(req, resp);
+        req.setAttribute("title", "Заказы");
+        req.getRequestDispatcher("/WEB-INF/views/order.jsp").forward(req, resp);
 
     }
 }

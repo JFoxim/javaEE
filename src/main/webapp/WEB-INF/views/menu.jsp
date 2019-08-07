@@ -1,10 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <link type="text/css" rel="stylesheet"  href="css/menu.css"/>
-    <title>Каталог</title>
-</head>
-<body>
 <ul>
     <li><a href="main">Главная</a></li>
     <li><a href="catalog">Каталог</a></li>
@@ -12,7 +5,3 @@
     <li><a href="cart">Корзина</a></li>
     <li><a href="order">Заказы</a></li>
 </ul>
-<p></p>
-<h2>Каталог</h2>
-</body>
-</html>

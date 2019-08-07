@@ -21,9 +21,9 @@ public class ProductServlet extends HttpServlet {
         logger.info("ProductServlet request");
         resp.setContentType(req.getAttribute("contentType").toString());
 
+        req.setAttribute("title", "Продукты");
 
-        resp.getWriter().println("<h2>Product Servlet</h2>");
-        req.getRequestDispatcher("/WEB-INF/views/product.html").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/product.jsp").forward(req, resp);
 
     }
 }

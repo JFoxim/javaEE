@@ -21,9 +21,9 @@ public class CartServlet extends HttpServlet {
 
         logger.info("CartServlet request");
         resp.setContentType(req.getAttribute("contentType").toString());
+        req.setAttribute("title", "Корзина");
 
-        resp.getWriter().println("<h2>Main Servlet</h2>");
-        req.getRequestDispatcher("/WEB-INF/views/cart.html").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
 
     }
 }
