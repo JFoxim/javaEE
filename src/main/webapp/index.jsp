@@ -7,7 +7,7 @@
 <p>
 <h2>Hello World!</h2>
 
-<p><a href="main">Главная</a></p>
+<p><a href="main">Главная2</a></p>
 
 </body>
 </html>

@@ -20,7 +20,7 @@ public class MainServlet extends HttpServlet {
         logger.info("MainServlet request");
         resp.setContentType(req.getAttribute("contentType").toString());
 
-        req.setAttribute("title", "Главная");
-        req.getRequestDispatcher("/WEB-INF/views/main.jsp").forward(req, resp);
+        req.setAttribute("title", "Main page");
+        req.getRequestDispatcher("WEB-INF/views/main.jsp").forward(req, resp);
     }
 }
