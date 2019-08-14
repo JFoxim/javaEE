@@ -2,10 +2,10 @@ package ru.shangareev.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.shangareev.persist.Product;
-import ru.shangareev.persist.ProductRepository;
-import ru.shangareev.persist.User;
-import ru.shangareev.persist.UserRepository;
+import ru.shangareev.entities.Product;
+import ru.shangareev.repositories.ProductRepository;
+import ru.shangareev.entities.User;
+import ru.shangareev.repositories.UserRepository;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletContextEvent;
@@ -44,6 +44,7 @@ public class ContextListener implements ServletContextListener {
                 userRepository.insert(new User(-1, "first_user", "ppp"));
                 userRepository.insert(new User(-1, "second_user", "ppp"));
             }
+
 
             ProductRepository productRepository = new ProductRepository(connection);
             context.setAttribute("productRepository", productRepository);

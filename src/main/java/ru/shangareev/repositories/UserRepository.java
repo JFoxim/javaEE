@@ -1,5 +1,7 @@
-package ru.shangareev.persist;
+package ru.shangareev.repositories;
 
+
+import ru.shangareev.entities.User;
 
 import java.sql.*;
 import java.util.ArrayList;

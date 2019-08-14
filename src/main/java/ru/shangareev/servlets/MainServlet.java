@@ -18,9 +18,9 @@ public class MainServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         logger.info("MainServlet request");
-        resp.setContentType(req.getAttribute("contentType").toString());
+        //resp.setContentType(req.getAttribute("contentType").toString());
 
-        req.setAttribute("title", "Main page");
-        req.getRequestDispatcher("WEB-INF/views/main.jsp").forward(req, resp);
+        //req.setAttribute("title", "Main page");
+        req.getRequestDispatcher("main.xhtml").forward(req, resp);
     }
 }
