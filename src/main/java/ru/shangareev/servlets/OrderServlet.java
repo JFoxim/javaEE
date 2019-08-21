@@ -16,10 +16,10 @@ public class OrderServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("OrderServlet request");
-        resp.setContentType(req.getAttribute("contentType").toString());
+        //resp.setContentType(req.getAttribute("contentType").toString());
 
-        req.setAttribute("title", "Заказы");
-        req.getRequestDispatcher("/WEB-INF/views/order.jsp").forward(req, resp);
+        //req.setAttribute("title", "Заказы");
+        req.getRequestDispatcher("WEB-INF/views/order.xhtml").forward(req, resp);
 
     }
 }

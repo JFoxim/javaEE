@@ -2,10 +2,11 @@ package ru.shangareev.servlets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.shangareev.persist.Product;
-import ru.shangareev.persist.ProductRepository;
+import ru.shangareev.entities.Product;
+import ru.shangareev.repositories.ProductRepository;
+import ru.shangareev.services.ProductService;
 
-import javax.servlet.ServletConfig;
+import javax.inject.Inject;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,26 +23,24 @@ public class CatalogServlet extends HttpServlet {
 
     private static Logger logger = LoggerFactory.getLogger(CatalogServlet.class);
 
+
+    @Inject
+    private ProductService productService;
+
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         logger.info("CatalogServlet request");
-        resp.setContentType(req.getAttribute("contentType").toString());
 
-        ServletContext context=getServletContext();
+        ServletContext context = getServletContext();
 
         ProductRepository productRepository = (ProductRepository)context.getAttribute("productRepository");
 
-        List<Product> productList = new ArrayList<>();
+        //List<Product> productList = new ArrayList<>();
 
-        try {
-              productList = productRepository.getAllProducts();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+         productService.preloadProductList(productRepository);
 
-        req.setAttribute("productList", productList);
-        req.setAttribute("title", "Каталог");
 
-        req.getRequestDispatcher("/WEB-INF/views/catalog.jsp").forward(req, resp);
+        //req.setAttribute("productList", productList);
+        req.getRequestDispatcher("WEB-INF/views/catalog.xhtml").forward(req, resp);
     }
 }

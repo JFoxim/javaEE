@@ -1,4 +1,4 @@
-package ru.shangareev.persist;
+package ru.shangareev.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

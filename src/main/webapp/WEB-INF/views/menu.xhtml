@@ -1,0 +1,17 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:p="http://primefaces.org/ui">
+
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+
+    <h:form id="menuForm">
+        <p:tabMenu activeIndex="#{param.i}">
+            <p:menuitem value="Главная" url="main"></p:menuitem>
+            <p:menuitem value="Каталог" url="catalog"></p:menuitem>
+            <p:menuitem value="Продукт" url="product"></p:menuitem>
+            <p:menuitem value="Корзина" url="cart"></p:menuitem>
+            <p:menuitem value="Заказы" url="order"></p:menuitem>
+        </p:tabMenu>
+    </h:form>
+</ui:composition>

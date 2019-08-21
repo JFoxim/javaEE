@@ -20,10 +20,10 @@ public class CartServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         logger.info("CartServlet request");
-        resp.setContentType(req.getAttribute("contentType").toString());
-        req.setAttribute("title", "Корзина");
+//        resp.setContentType(req.getAttribute("contentType").toString());
+//        req.setAttribute("title", "Корзина");
 
-        req.getRequestDispatcher("/WEB-INF/views/cart.jsp").forward(req, resp);
+        req.getRequestDispatcher("WEB-INF/views/cart.xhtml").forward(req, resp);
 
     }
 }

@@ -1,10 +1,13 @@
-package ru.shangareev.persist;
+package ru.shangareev.repositories;
+
+import ru.shangareev.entities.Product;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductRepository {
+
     private final Connection conn;
 
     public ProductRepository(Connection conn) throws SQLException {
@@ -72,6 +75,14 @@ public class ProductRepository {
             }
         }
         return res;
+    }
+
+    public void delete(Product product) throws SQLException {
+        try (PreparedStatement stmt = conn.prepareStatement(
+                "delete from products where id = ?;")) {
+            stmt.setInt(1, product.getId());
+            stmt.execute();
+        }
     }
 
     private void createTableIfNotExists(Connection conn) throws SQLException {
