@@ -31,13 +31,13 @@ public class CatalogServlet extends HttpServlet {
 
         logger.info("CatalogServlet request");
 
-        ServletContext context = getServletContext();
+        //ServletContext context = getServletContext();
 
-        ProductRepository productRepository = (ProductRepository)context.getAttribute("productRepository");
+        //ProductRepository productRepository = (ProductRepository)context.getAttribute("productRepository");
 
-        //List<Product> productList = new ArrayList<>();
+        List<Product> productList = new ArrayList<>();
 
-         productService.preloadProductList(productRepository);
+        productList = productService.getProductList();
 
 
         //req.setAttribute("productList", productList);

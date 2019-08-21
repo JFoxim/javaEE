@@ -1,86 +1,51 @@
 package ru.shangareev.repositories;
 
 
+import lombok.NoArgsConstructor;
 import ru.shangareev.entities.User;
 
+
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
 
+@Named
+@NoArgsConstructor
+@ApplicationScoped
 public class UserRepository {
 
-    private final Connection conn;
+   @PersistenceContext(unitName = "ds")
+   protected EntityManager entityManager;
 
-    public UserRepository(Connection conn) throws SQLException {
-        this.conn = conn;
-        createTableIfNotExists(conn);
-    }
 
-    public void insert(User user) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "insert into users(login, password) values (?, ?);")) {
-            stmt.setString(1, user.getLogin());
-            stmt.setString(2, user.getPassword());
-            stmt.execute();
-        }
-    }
-
-    public void save(User user) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "update users set login = ?, password = ? where id = ?;")) {
-            stmt.setString(1, user.getLogin());
-            stmt.setString(2, user.getPassword());
-            stmt.setInt(3, user.getId());
-            stmt.execute();
-        }
-    }
+   public void merge(User user){
+        entityManager.merge(user);
+   }
 
     public User findByLogin(String login) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "select id, login, password from users where login = ?")) {
-            stmt.setString(1, login);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-            }
-        }
-        return new User(-1, "", "");
+        User user = (User)entityManager.createQuery(
+                "select user from User as user where user.login= ?1")
+                .setParameter(1, login)
+                .getSingleResult();
+        return user;
     }
 
     public User findById(int id) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "select id, login, password from users where id = ?")) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new User(rs.getInt(1), rs.getString(2), rs.getString(3));
-            }
-        }
-        return null;
+        return entityManager.find(User.class, id);
     }
 
     public List<User> getAllUsers() throws SQLException {
-        List<User> res = new ArrayList<>();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id, login, password from users");
-
-            while (rs.next()) {
-                res.add(new User(rs.getInt(1), rs.getString(2), rs.getString(3)));
-            }
-        }
-        return res;
+        List<User> users = entityManager.createQuery(
+                "select user from User as user")
+                .getResultList();
+        return users;
     }
 
-    private void createTableIfNotExists(Connection conn) throws SQLException {
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("create table if not exists users (\n" +
-                    "\tid int auto_increment primary key,\n" +
-                    "    login varchar(25),\n" +
-                    "    password varchar(25),\n" +
-                    "    unique index uq_login(login)\n" +
-                    ");");
-        }
+    public void delete(User user){
+       entityManager.remove(user);
     }
+
 }
