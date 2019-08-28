@@ -1,97 +1,51 @@
 package ru.shangareev.repositories;
 
+import lombok.NoArgsConstructor;
 import ru.shangareev.entities.Product;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.inject.Named;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Named
+@NoArgsConstructor
+@ApplicationScoped
 public class ProductRepository {
 
-    private final Connection conn;
+    @PersistenceContext(unitName = "ds")
+    protected EntityManager entityManager;
 
-    public ProductRepository(Connection conn) throws SQLException {
-        this.conn = conn;
-        createTableIfNotExists(conn);
-    }
 
-    public void insert(Product product) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "insert into products(name, description, price) values (?, ?, ?);")) {
-            stmt.setString(1, product.getName());
-            stmt.setString(2, product.getDescription());
-            stmt.setDouble(3, product.getPrice());
-            stmt.execute();
-        }
-    }
-
-    public void save(Product product) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "update products set name = ?, description = ?, price= ? where id = ?;")) {
-            stmt.setString(1, product.getName());
-            stmt.setString(2, product.getDescription());
-            stmt.setDouble(3, product.getPrice());
-            stmt.setInt(4, product.getId());
-            stmt.execute();
-        }
+    public void merge(Product product){
+        entityManager.merge(product);
     }
 
     public Product findByName(String name) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "select id, name, description, price  from products where name = ?")) {
-            stmt.setString(1, name);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new Product(rs.getInt(1), rs.getString(2),
-                        rs.getString(3),  rs.getDouble(4));
-            }
-        }
-        return new Product(-1, "", "", 0);
+        Product product = (Product) entityManager.createQuery(
+                "select product from Product as product where product.name = ?1")
+                .setParameter(1, name)
+                .getSingleResult();
+        return product;
     }
 
     public Product findById(int id) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "select id, name, description, price from products where id = ?")) {
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                return new Product(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getDouble(4));
-            }
-        }
-        return null;
+        return entityManager.find(Product.class, id);
     }
 
     public List<Product> getAllProducts() throws SQLException {
-        List<Product> res = new ArrayList<>();
-        try (Statement stmt = conn.createStatement()) {
-            ResultSet rs = stmt.executeQuery("select id, name, description, price from products");
-
-            while (rs.next()) {
-                res.add(new Product(rs.getInt(1), rs.getString(2),
-                        rs.getString(3), rs.getDouble(4)));
-            }
-        }
-        return res;
+        List<Product> productList = new ArrayList<>();
+        productList = entityManager.createQuery(
+                "select product from Product as product")
+                .getResultList();
+        return productList;
     }
 
     public void delete(Product product) throws SQLException {
-        try (PreparedStatement stmt = conn.prepareStatement(
-                "delete from products where id = ?;")) {
-            stmt.setInt(1, product.getId());
-            stmt.execute();
-        }
+           entityManager.remove(product);
     }
 
-    private void createTableIfNotExists(Connection conn) throws SQLException {
-        try (Statement stmt = conn.createStatement()) {
-            stmt.execute("create table if not exists products (\n" +
-                    "\tid int auto_increment primary key,\n" +
-                    "    name varchar(255),\n" +
-                    "    description varchar(5000),\n" +
-                    "    price decimal(8,2));");
-        }
-    }
 }

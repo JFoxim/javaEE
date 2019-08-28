@@ -5,45 +5,33 @@ import org.slf4j.LoggerFactory;
 import ru.shangareev.entities.Product;
 import ru.shangareev.repositories.ProductRepository;
 
-import javax.enterprise.context.SessionScoped;
-import javax.faces.context.FacesContext;
-import javax.faces.event.AbortProcessingException;
-import javax.faces.event.ComponentSystemEvent;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.sql.Connection;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-@SessionScoped
+@ApplicationScoped
 @Named("productService")
 public class ProductService implements Serializable {
 
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);
 
+    @Inject
     private ProductRepository productRepository;
 
     private Product product;
 
     private List<Product> productList;
 
-    public void preloadProductList(ProductRepository productRepository) {
+    public ProductService(){
 
-        this.productRepository = productRepository;
-        try {
-            productList = productRepository.getAllProducts();
-        } catch (SQLException e) {
-            logger.info(e.getMessage());
-        }
     }
 
     public List<Product> getProductList()
     {
-        List<Product> productList = new ArrayList<>();
-
-        try{
+       try{
             productList = productRepository.getAllProducts();
         }
         catch (SQLException ex){
@@ -71,18 +59,18 @@ public class ProductService implements Serializable {
 
     public void addProduct(Product product) {
         try {
-             productRepository.insert(product);
+             productRepository.merge(product);
              this.product = product;
-        }catch (SQLException ex){
+        }catch (Exception ex){
             logger.info(ex.getMessage());
         }
     }
 
     public void saveProduct(Product product) {
         try {
-            productRepository.save(product);
+            productRepository.merge(product);
             this.product = product;
-        }catch (SQLException ex){
+        }catch (Exception ex){
             logger.info(ex.getMessage());
         }
     }

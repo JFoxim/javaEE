@@ -4,10 +4,6 @@
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
 
-<!--<jsp:include page="head.jsp">&#45;&#45;%>-->
-    <!--<%&#45;&#45;<jsp:param name="title" value="${title}"/>&#45;&#45;%>-->
-<!--</jsp:include>-->
-
 <h:head>
     <title>Каталог</title>
     <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
@@ -17,24 +13,42 @@
 <p></p>
     <h2><h:outputLabel>Каталог</h:outputLabel></h2>
 <p></p>
-     <ui:include src="menu.xhtml"/>
-<p></p>
-    <p:dataTable var="product" value="#{productService.productList}" paginator="true" rows="10">
-        <p:column headerText="Id">
+    <ui:include src="menu.xhtml"/>
+    <h:form id="dataForm">
+
+    <p:dataTable var="product" value="#{productService.productList}" paginator="true" rows="3">
+        <f:facet name="header">
+           Каталог товаров
+        </f:facet>
+
+        <p:column headerText="Id" width="10">
             <h:outputText value="#{product.id}" />
         </p:column>
 
-        <p:column headerText="Название товара">
+
+        <p:column headerText="Название товара" width="30">
             <h:outputText value="#{product.name}" />
         </p:column>
 
-        <p:column headerText="Описание">
+        <p:column headerText="Описание" width="200">
             <h:outputText value="#{product.description}" />
         </p:column>
 
-        <p:column headerText="Стоимость">
+        <p:column headerText="Стоимость" width="20">
             <h:outputText value="#{product.price}" />
         </p:column>
+
+        <p:column headerText="Действие" width="25">
+             <p:commandButton  update=":dataForm"
+                       action="#{productService.setProduct(product)}"
+                       oncomplete="PF('productDialog').show()"  icon="pi pi-pencil" ajax="true">
+          </p:commandButton>
+
+             <p:commandButton  id="withIcon" action="#{productService.deleteProduct(product)}"
+                              update=":dataForm" style="margin-right:20px;" icon="pi pi-trash" ajax="true"/>
+        </p:column>
+        <ui:include src="product-edit.xhtml"/>
     </p:dataTable>
+    </h:form>
 </h:body>
 </html>

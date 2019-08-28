@@ -19,9 +19,6 @@ public class ProductServlet extends HttpServlet {
 
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("ProductServlet request");
-//        resp.setContentType(req.getAttribute("contentType").toString());
-//
-//        req.setAttribute("title", "Продукты");
 
         req.getRequestDispatcher("WEB-INF/views/product.xhtml").forward(req, resp);
 
