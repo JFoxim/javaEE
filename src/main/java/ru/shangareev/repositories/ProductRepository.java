@@ -2,12 +2,11 @@ package ru.shangareev.repositories;
 
 import lombok.NoArgsConstructor;
 import ru.shangareev.entities.Product;
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.sql.*;
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,12 +18,13 @@ public class ProductRepository {
     @PersistenceContext(unitName = "ds")
     protected EntityManager entityManager;
 
-
+    @Transactional
     public void merge(Product product){
         entityManager.merge(product);
     }
 
-    public Product findByName(String name) throws SQLException {
+    @Transactional
+    public Product findByName(String name) {
         Product product = (Product) entityManager.createQuery(
                 "select product from Product as product where product.name = ?1")
                 .setParameter(1, name)
@@ -32,19 +32,22 @@ public class ProductRepository {
         return product;
     }
 
-    public Product findById(int id) throws SQLException {
+    @Transactional
+    public Product findById(int id) {
         return entityManager.find(Product.class, id);
     }
 
-    public List<Product> getAllProducts() throws SQLException {
+    @Transactional
+    public List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
         productList = entityManager.createQuery(
-                "select product from Product as product")
+                "select product from Product as product", Product.class)
                 .getResultList();
         return productList;
     }
 
-    public void delete(Product product) throws SQLException {
+    @Transactional
+    public void delete(Product product) {
            entityManager.remove(product);
     }
 
