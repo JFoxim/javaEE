@@ -2,6 +2,8 @@ package ru.shangareev.services;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.shangareev.dto.CategoryDto;
+import ru.shangareev.dto.ProductDto;
 import ru.shangareev.entities.Category;
 import ru.shangareev.entities.Product;
 import ru.shangareev.repositories.CategoryRepository;
@@ -13,6 +15,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 @Named("productService")
@@ -26,62 +29,102 @@ public class ProductService implements Serializable {
     @Inject
     private CategoryRepository categoryRepository;
 
-    private Product product;
+    private ProductDto product;
 
-    private List<Product> productList;
+    private List<ProductDto> productList;
 
-    private List<Category> categories;
+    private List<CategoryDto> categoriesDto;
 
     public ProductService(){
     }
 
     @PostConstruct
     public void init(){
-        productList = productRepository.getAllProducts();
-        categories = categoryRepository.getAllCategories();
+        productList = productRepository.getAllProducts().stream()
+                .map(p -> new ProductDto(p.getId(), p.getName(), p.getDescription(), p.getPrice(), p.getCategory()))
+                .collect(Collectors.toList());
+
+        categoriesDto = categoryRepository.getAllCategories().stream()
+        .map(c -> new CategoryDto(c.getId(), c.getTitle()))
+        .collect(Collectors.toList());
     }
 
-    public List<Product> getProductList()    {
-       return productList;
+    public List<ProductDto> getProductList(){
+        productList = productRepository.getAllProducts().stream()
+                .map(p -> new ProductDto(p.getId(), p.getName(), p.getDescription(), p.getPrice(), p.getCategory()))
+                .collect(Collectors.toList());
+       return  productList;
     }
 
-    public Product getProduct() {
+    public ProductDto getProduct() {
+        productList = productRepository.getAllProducts().stream()
+          .map(p -> new ProductDto(p.getId(), p.getName(), p.getDescription(), p.getPrice(), p.getCategory()))
+          .collect(Collectors.toList());
         return this.product;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(ProductDto productDto) {
+        this.product = productDto;
     }
 
-    public String deleteProduct(Product product){
-         productRepository.delete(product);
+    public String deleteProduct(ProductDto product){
+         productRepository.delete(product.getId());
         return "catalog.xhtml?faces-redirect=true";
     }
 
     public String addProduct() {
-        Product product = new Product();
-        productRepository.merge(product);
-        this.product = product;
+        ProductDto prod = new ProductDto();
+        prod.setId(-1);
+        prod.setName("");
+        prod.setPrice(0.0);
+        this.product = prod;
         return "product.xhtml?faces-redirect=true";
     }
 
-    public String saveProduct(Product product) {
-        productRepository.merge(product);
-        this.product = product;
+    public String saveProduct() {
+        System.out.println("save prepare");
+
+        CategoryDto catDto = product.getCategoryDto();
+
+        Category cat = new Category(catDto.getId(), catDto.getTitle());
+
+        Product prod = new Product(product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                cat);
+
+        if (productRepository.findById(prod.getId()) == null) {
+            productRepository.add(prod);
+        }
+        else {
+            productRepository.merge(prod);
+        }
+
+        System.out.println("save complite");
+        System.out.println(product.getName());
         return "catalog.xhtml?faces-redirect=true";
     }
 
-
-    public String editProduct(Product product) {
-        this.product = product;
+    public String editProduct(ProductDto prod) {
+        this.product = prod;
         return "product.xhtml?faces-redirect=true";
     }
 
-    public void getProductById(int productId) {
-         this.product = productRepository.findById(productId);
+    public ProductDto getProductById(int productId) {
+         Product prod = productRepository.findById(productId);
+
+         return new ProductDto(prod.getId(),
+                 prod.getName(),
+                 prod.getDescription(),
+                 prod.getPrice(),
+                 prod.getCategory());
     }
 
-    public List<Category> getAllCategories() {
-        return categories;
+    public List<CategoryDto> getAllCategories() {
+        categoriesDto = categoryRepository.getAllCategories().stream()
+                .map(c -> new CategoryDto(c.getId(), c.getTitle()))
+                .collect(Collectors.toList());
+        return categoriesDto;
     }
 }

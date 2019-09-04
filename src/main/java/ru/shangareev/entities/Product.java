@@ -10,7 +10,6 @@ import javax.validation.constraints.Digits;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 
-
 @Entity
 @Getter
 @Setter
@@ -38,6 +37,11 @@ public class Product implements Serializable {
 
     @ManyToOne
     private Category category;
+
+    @Override
+    public String toString(){
+        return this.name;
+    }
 
 }
 
