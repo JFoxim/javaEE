@@ -20,7 +20,7 @@ public class ProductServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         logger.info("ProductServlet request");
 
-        req.getRequestDispatcher("WEB-INF/views/product.xhtml").forward(req, resp);
+        req.getRequestDispatcher("product.xhtml").forward(req, resp);
 
     }
 }

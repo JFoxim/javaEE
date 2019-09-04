@@ -3,12 +3,11 @@ package ru.shangareev.repositories;
 
 import lombok.NoArgsConstructor;
 import ru.shangareev.entities.User;
-
-
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.Transactional;
 import java.sql.*;
 import java.util.List;
 
@@ -20,11 +19,12 @@ public class UserRepository {
    @PersistenceContext(unitName = "ds")
    protected EntityManager entityManager;
 
-
+   @Transactional
    public void merge(User user){
         entityManager.merge(user);
    }
 
+    @Transactional
     public User findByLogin(String login) throws SQLException {
         User user = (User)entityManager.createQuery(
                 "select user from User as user where user.login= ?1")
@@ -33,17 +33,20 @@ public class UserRepository {
         return user;
     }
 
+    @Transactional
     public User findById(int id) throws SQLException {
         return entityManager.find(User.class, id);
     }
 
+    @Transactional
     public List<User> getAllUsers() throws SQLException {
         List<User> users = entityManager.createQuery(
-                "select user from User as user")
+                "select user from User as user", User.class)
                 .getResultList();
         return users;
     }
 
+    @Transactional
     public void delete(User user){
        entityManager.remove(user);
     }

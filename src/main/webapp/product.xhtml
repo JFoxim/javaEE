@@ -1,0 +1,53 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+    <title>Продукт</title>
+    <h:outputStylesheet name="primeicons/primeicons.css" library="primefaces"/>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+              integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous"/>
+</h:head>
+
+<h:body>
+    <p></p>
+    <h2><h:outputLabel>Продукт</h:outputLabel></h2>
+    <p></p>
+    <ui:include src="WEB-INF/views/menu.xhtml"/>
+
+    <div class="container">
+        <h:form id="productForm">
+            <div class="form-group">
+                <h:outputLabel value="Наименование" for="exampleInputProductName" />
+                <h:inputText styleClass="form-control" id="exampleInputProductName" placeholder="Введите наименование"
+                             value="#{productService.product.name}" required="true" requiredMessage="Наименование обязательно" >
+                    <f:ajax event="blur" render="loginValidationError" />
+                </h:inputText>
+
+                <h:message id="loginValidationError" for="exampleInputProductName" style="color: red" />
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Описание" for="exampleInputDescript" />
+                <h:inputText styleClass="form-control" id="exampleInputDescript" placeholder="описание"
+                               value="#{productService.product.description}" />
+            </div>
+            <div class="form-group">
+                <h:outputLabel value="Цена" for="exampleInputPrice" />
+                <h:inputText styleClass="form-control" id="exampleInputPrice" placeholder="цена"
+                               value="#{productService.product.price}" />
+            </div>
+            <div class="form-group">
+                <h:selectOneMenu value="#{productService.product.category}" layout="pageDirection">
+                    <f:selectItems value="#{productService.allCategories}" />
+                </h:selectOneMenu>
+            </div>
+            <h:commandButton value="Сохранить" styleClass="btn btn-primary" action="#{productService.saveProduct(productService.product)}" />
+        </h:form>
+    </div>
+
+</h:body>
+</html>

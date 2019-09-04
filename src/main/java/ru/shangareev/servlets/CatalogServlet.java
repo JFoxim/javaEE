@@ -41,6 +41,6 @@ public class CatalogServlet extends HttpServlet {
 
 
         //req.setAttribute("productList", productList);
-        req.getRequestDispatcher("WEB-INF/views/catalog.xhtml").forward(req, resp);
+        req.getRequestDispatcher("catalog.xhtml").forward(req, resp);
     }
 }

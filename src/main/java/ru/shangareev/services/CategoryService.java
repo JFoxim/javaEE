@@ -25,19 +25,11 @@ public class CategoryService implements Serializable {
 
     private List<Category> categoryList;
 
-    public CategoryService(){
-
-    }
+    public CategoryService(){ }
 
     public List<Category> getCategoryList()
     {
-        try{
-            categoryList = categoryRepository.getAllCategories();
-        }
-        catch (SQLException ex){
-            logger.info(ex.getMessage());
-        }
-        return categoryList;
+        return categoryRepository.getAllCategories();
     }
 
     public Category getCategory() {
@@ -49,37 +41,20 @@ public class CategoryService implements Serializable {
     }
 
     public void deleteCategory(Category category){
-        try {
-            categoryRepository.delete(category);
-        }
-        catch (SQLException ex){
-            logger.info(ex.getMessage());
-        }
-    }
+         categoryRepository.delete(category);
+     }
 
     public void addCategory(Category category) {
-        try {
-            categoryRepository.merge(category);
-            this.category = category;
-        }catch (Exception ex){
-            logger.info(ex.getMessage());
-        }
+        categoryRepository.merge(category);
+        this.category = category;
     }
 
     public void saveCategory(Category category) {
-        try {
             categoryRepository.merge(category);
             this.category = category;
-        }catch (Exception ex){
-            logger.info(ex.getMessage());
-        }
     }
 
     public void getCategoryById(int categoryId) {
-        try {
-            this.category = categoryRepository.findById(categoryId);
-        }catch (SQLException ex){
-            logger.info(ex.getMessage());
-        }
+         this.category = categoryRepository.findById(categoryId);
     }
 }
