@@ -108,11 +108,21 @@
   <build>
     <finalName>javaee.shangareevrr</finalName>
       <plugins>
-          <plugin>
-              <groupId>org.wildfly.plugins</groupId>
-              <artifactId>wildfly-maven-plugin</artifactId>
-              <version>1.0.2.Final</version>
-          </plugin>
+          <!--<plugin>-->
+              <!--<groupId>org.wildfly.plugins</groupId>-->
+              <!--<artifactId>wildfly-maven-plugin</artifactId>-->
+              <!--<version>1.0.2.Final</version>-->
+          <!--</plugin>-->
+        <plugin>
+          <groupId>org.wildfly.plugins</groupId>
+          <artifactId>wildfly-maven-plugin</artifactId>
+          <configuration>
+            <scripts>
+              <script>configure-server.cli</script>
+            </scripts>
+            <jboss-home>/home/rinat/Program/wildfly-17.0.1.Final</jboss-home>
+          </configuration>
+        </plugin>
       </plugins>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>

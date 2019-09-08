@@ -94,7 +94,7 @@ public class ProductService implements Serializable {
                 product.getPrice(),
                 cat);
 
-        if (productRepository.findById(prod.getId()) == null) {
+        if (prod.getId() == -1) {
             productRepository.add(prod);
         }
         else {
