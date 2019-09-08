@@ -5,14 +5,14 @@ import org.slf4j.LoggerFactory;
 import ru.shangareev.entities.User;
 import ru.shangareev.repositories.UserRepository;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.List;
 
-@ApplicationScoped
-@Named("userService")
+@Named
+@Stateful(name = "userService")
 public class UserService {
 
     private static Logger logger = LoggerFactory.getLogger(UserService.class);

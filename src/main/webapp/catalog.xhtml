@@ -18,7 +18,7 @@
 <p></p>
     <ui:include src="WEB-INF/views/menu.xhtml"/>
     <h:form id="dataForm">
-        <h:commandButton value="New" action="#{productService.addProduct()}" />
+        <h:commandButton value="New" action="#{productService.addProduct}" />
 
     <p:dataTable var="product" value="#{productService.productList}" >
         <f:facet name="header">
@@ -27,6 +27,10 @@
 
         <p:column headerText="Id" width="10">
             <h:outputText value="#{product.id}" />
+        </p:column>
+
+        <p:column headerText="Категория" width="20">
+            <h:outputText value="#{product.categoryDto.title}" />
         </p:column>
 
         <p:column headerText="Название товара" width="30">

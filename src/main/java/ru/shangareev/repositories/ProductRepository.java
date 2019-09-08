@@ -2,12 +2,12 @@ package ru.shangareev.repositories;
 
 import lombok.NoArgsConstructor;
 import ru.shangareev.entities.Product;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 
 @Named
@@ -21,6 +21,11 @@ public class ProductRepository {
     @Transactional
     public void merge(Product product){
         entityManager.merge(product);
+    }
+
+    @Transactional
+    public void add(Product product){
+        entityManager.persist(product);
     }
 
     @Transactional
@@ -39,16 +44,17 @@ public class ProductRepository {
 
     @Transactional
     public List<Product> getAllProducts() {
-        List<Product> productList = new ArrayList<>();
-        productList = entityManager.createQuery(
+        List<Product> productList = entityManager.createQuery(
                 "select product from Product as product", Product.class)
                 .getResultList();
         return productList;
     }
 
     @Transactional
-    public void delete(Product product) {
-           entityManager.remove(product);
+    public void delete(int productId) {
+         Product prod = findById(productId);
+         entityManager.remove(prod);
     }
+
 
 }

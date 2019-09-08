@@ -5,15 +5,14 @@ import org.slf4j.LoggerFactory;
 import ru.shangareev.entities.Category;
 import ru.shangareev.repositories.CategoryRepository;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.ejb.Stateful;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.io.Serializable;
-import java.sql.SQLException;
 import java.util.List;
 
-@ApplicationScoped
-@Named("categoryService")
+@Named
+@Stateful(name = "categoryService")
 public class CategoryService implements Serializable {
 
     private static Logger logger = LoggerFactory.getLogger(ProductService.class);

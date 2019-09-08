@@ -33,5 +33,15 @@ public class Category implements Serializable {
             orphanRemoval = true,
             cascade = CascadeType.ALL)
     private List<Product> products;
+
+    public Category(int id, String title) {
+        this.id = id;
+        this.title = title;
+    }
+
+    @Override
+    public String toString(){
+        return this.title;
+    }
 }
 
